@@ -1,12 +1,11 @@
 {
   "name": "smonitorpkg",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "main": "index.js",
   "repository": "git@quality:luizbpacct/smonitorpkg.git",
   "author": "Luiz Carlos B Pereira <luiz.pereira@qualitydigital.com>",
   "license": "MIT",
   "devDependencies": {
-    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.5.3"
   },
   "scripts": {

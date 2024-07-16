@@ -1,72 +1,88 @@
-import { getErrorMessageInString } from "../getErrorMessageInString"
-import { getObjectInString } from "../getObjectInString"
+import { getErrorMessageInString } from "../getErrorMessageInString";
+import { getObjectInString } from "../getObjectInString";
 
 type ServiceMonitorClassProps<RouteName> = {
-  routeName?: RouteName
-}
+  routeName?: RouteName;
+};
 
 type Context = {
   clients: {
     masterdata: {
-      createDocument: (props: any) => any
-    }
-  }
-}
+      createDocument: (props: any) => any;
+      searchDocumentsWithPaginationInfo: (props: any) => any;
+    };
+  };
+};
 
 type GetPerformanceObjectProps = {
-  isError?: boolean
-  msg?: Record<any, any> | Array<any> | string
-  returnObject?: Record<any, any> | Array<any>
-  requestObject?: Record<any, any> | Array<any>
-}
+  isError?: boolean;
+  msg?: Record<any, any> | Array<any> | string;
+  returnObject?: Record<any, any> | Array<any> | null;
+  requestObject?: Record<any, any> | Array<any> | null;
+};
 
 type PerformanceObject<RouteName> = {
-  date: string
-  isError: boolean
-  msg: string
-  returnObject: string
-  requestObject: string
-  processingTime: number
-  routeName: RouteName
-}
+  date: string;
+  isError: boolean;
+  msg: string;
+  returnObject: string;
+  requestObject: string;
+  processingTime: number;
+  routeName: RouteName;
+};
 
 type SaveDataProps<RouteName> = {
-  data: PerformanceObject<RouteName>
-  ctx: Context
-  entity: string
-}
+  data: PerformanceObject<RouteName>;
+  ctx: Context;
+  entity: string;
+  minLatency?: number
+};
+
+type GetDataProps = {
+  data: {
+    startDate: string;
+    endDate: string;
+    pagination?: {
+      page: number;
+      pageSize: number;
+    };
+    routes: string[];
+  };
+  ctx: Context;
+  entity: string;
+};
 
 export class ServiceMonitorClass<RouteName = string> {
-  private routeName?: RouteName
-  private date: string
-  private startTime: number | null
-  
-  constructor(props?:ServiceMonitorClassProps<RouteName>) {
-    this.date = new Date().toISOString()
-    this.routeName = props?.routeName
-    this.startTime = null
+  private routeName?: RouteName;
+  private date: string;
+  private startTime: number | null;
+
+  constructor(props?: ServiceMonitorClassProps<RouteName>) {
+    this.date = new Date().toISOString();
+    this.routeName = props?.routeName;
+    this.startTime = null;
   }
 
   public startTimer() {
     if (!this.routeName) {
-      throw new Error(' The routename has not been specified')
+      throw new Error(" The routename has not been specified");
     }
 
-    this.startTime = Date.now()
+    this.startTime = Date.now();
   }
 
   public getObject({
     isError = false,
-    msg = 'Success',
+    msg = "Success",
     returnObject = null,
-    requestObject = null
+    requestObject = null,
   }: GetPerformanceObjectProps): PerformanceObject<RouteName> {
     if (this.startTime === null) {
-      throw new Error('The timer has not started')
+      throw new Error("The timer has not started");
     }
 
     if (!this.routeName) {
-      throw new Error(' The routename has not been specified')
+      throw new Error(" The routename has not been specified");
     }
 
     return {
@@ -74,16 +90,67 @@ export class ServiceMonitorClass<RouteName = string> {
       routeName: this.routeName,
       isError,
       msg: getErrorMessageInString(msg),
-      returnObject: getObjectInString(returnObject),
-      requestObject: getObjectInString(requestObject),
+      returnObject:
+        returnObject === null ? "null" : getObjectInString(returnObject),
+      requestObject:
+        requestObject === null ? "null" : getObjectInString(requestObject),
       processingTime: Date.now() - this.startTime,
-    }
+    };
   }
 
-  public saveData({data, ctx, entity}: SaveDataProps<RouteName>) {
+  public saveData({ data, ctx, entity, minLatency = 1}: SaveDataProps<RouteName>) {
+
+    if(minLatency > data.processingTime) return
+
     ctx.clients.masterdata.createDocument({
       dataEntity: entity,
       fields: data,
-    })
+    });
+  }
+
+  public async getData({
+    data: { startDate, endDate, pagination, routes },
+    ctx,
+    entity,
+  }: GetDataProps) {
+    if (!startDate || !endDate) {
+      throw new Error(`Invalid startDate or endDate`);
+    }
+
+    if (!ctx) {
+      throw new Error("The ctx has not been informed");
+    }
+
+    let where = `date between ${startDate} AND ${endDate}`;
+
+    if (routes?.length) {
+      let addString = "";
+
+      routes.forEach((route, index) => {
+        addString += `routeName=${route}`;
+        if (routes.length !== index + 1) {
+          addString += ` OR `;
+        }
+      });
+      where = `${where} AND (${addString})`;
+    }
+
+    return ctx.clients.masterdata.searchDocumentsWithPaginationInfo({
+      dataEntity: entity,
+      fields: [
+        "date",
+        "isError",
+        "msg",
+        "objectReturn",
+        "requestObject",
+        "processingTime",
+        "routeName",
+      ],
+      pagination: {
+        page: pagination?.page || 1,
+        pageSize: pagination?.pageSize || 100,
+      },
+      where,
+    });
   }
 }
