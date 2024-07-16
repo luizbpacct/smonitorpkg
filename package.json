@@ -1,0 +1,15 @@
+{
+  "name": "smonitorpkg",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@quality:luizbpacct/smonitorpkg.git",
+  "author": "Luiz Carlos B Pereira <luiz.pereira@qualitydigital.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.5.3"
+  },
+  "scripts": {
+    "compile": "rm -rf dist/lib && tsc && tsc --build tsconfig.es5.json"
+  }
+}
