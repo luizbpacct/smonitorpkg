@@ -46,9 +46,9 @@ A biblioteca disponibiliza algumas funções, porém a principal delas é a `Ser
 ### ServiceMonitorClass
 
 
-| Prop        | Tipo   | Padrão       | Descrição    |
-|-------------|--------|--------------|--------------|
-| routeName   | string | -            | Nome da rota |
+| Prop        | Tipo     | Padrão       | Descrição    |
+|-------------|----------|--------------|--------------|
+| routeName   | `string` | -            | Nome da rota |
 
 
 Como dito acima, essa classe tem como objetivo gerar um objeto de monitoramento na rota, que ao finalizar ou ocorrer um erro no tempo de vida da requisição, ele registra:
@@ -85,7 +85,7 @@ Esse processo irá iniciar o objeto de monitoramento, dando um start no "timer" 
  ```javascript
 ctx.clients.events.sendEvent('', '{{NOME_DO_EVENTO}}',
     performanceObject.getObject({
-        isError: false, // Se o código deu erro essa várivel sera `true`
+        isError: false, // Se o retorno é de erro ou não
        
         msg: '', // Mensagem de retorno, caso haja
        
@@ -168,7 +168,7 @@ Isso irá adicionar esse evento ao seu app permitindo escutar o disparo do event
 
 | Prop  | Tipo                       | Padrão | Descrição                                                                     |
 |-------|----------------------------|--------|-------------------------------------------------------------------------------|
-| error | (Object, Array ou String) | -      | Objeto do erro, o objeto que o catch retorna ou um objeto montado manualmente |
+| error | `(Object, Array ou String)` | -      | Objeto do erro, o objeto que o catch retorna ou um objeto montado manualmente |
 
 
 Essa função retornar a mensagem que contém dentro de um objeto de erro, que geralmente segue o seguinte padrão:
@@ -182,9 +182,9 @@ Essa função retornar a mensagem que contém dentro de um objeto de erro, que g
 ### getObjectInString
 
 
-| Prop  | Tipo               | Padrão | Descrição                        |
-|-------|--------------------|--------|----------------------------------|
-| error | (Onbject ou Array) | -      | O objeto que será "stringficado" |
+| Prop  | Tipo                | Padrão | Descrição                        |
+|-------|---------------------|--------|----------------------------------|
+| error | `(Object ou Array)` | -      | O objeto que será "stringficado" |
 
 
 Essa função tenta executar o comando `JSON.stringify` no objeto, caso não consiga por conta do tamanho do objeto, ele retorna um objeto padrão "stringficado":
