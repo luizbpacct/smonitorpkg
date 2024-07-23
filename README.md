@@ -50,6 +50,38 @@ A biblioteca disponibiliza algumas funções, porém a principal delas é a `Ser
 |-------------|----------|--------------|--------------|
 | routeName   | `string` | -            | Nome da rota |
 
+As funções de cada objeto dessa classe são:
+
+#### startTimer
+Inicia o timer de processamento;
+
+#### getObject
+| Prop          | Tipo                                       | Padrão    | Descrição                                              |
+|---------------|--------------------------------------------|-----------|--------------------------------------------------------|
+| isError       | `boolean`                                  | `false`   | Se o log é um erro                                     |
+| msg           | `string`                                   | `Success` | Mensagem de retorno da Rota                            |
+| returnObject  | `Record<any, any>`, `Array<any>` ou `null` | `null`    | Objeto de retorno da requisição                        |
+| requestObject | `Record<any, any>`, `Array<any>` ou `null` | `null`    | Objeto enviado para a requisição (body, query ou path) |
+
+Pega o objeto formatado para ser inserido na entidade de dados.
+
+#### saveData
+| Prop       | Tipo                                                                                                                                                                                                                   | Padrão | Descrição                                                                         |
+|------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-----------------------------------------------------------------------------------|
+| data       | type PerformanceObject<RouteName> = {<br>  date: string;<br>  isError: boolean;<br>  msg: string;<br>  returnObject: string;<br>  requestObject: string;<br>  processingTime: number;<br>  routeName: RouteName;<br>}; | -      | Objeto que será salvo no Master data                                              |
+| ctx        | `Context`                                                                                                                                                                                                              | -      | Objeto de contexto do Serviço                                                     |
+| entity     | `string`                                                                                                                                                                                                               | -      | Entidade padrão  onde os logs será registrados                                    |
+| minLatency | `number`                                                                                                                                                                                                               | 1      | Valor mínimo que a rota demorou para processar para poder registrar no masterdata |
+
+Função que salva o objeto de log dentro do masterdata
+
+#### getData
+| Prop   | Tipo                                                                                                                                                                  | Padrão | Descrição                                       |
+|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------------------------------------|
+| data   | {<br>    startDate: string;<br>    endDate: string;<br>    pagination?: {<br>      page: number;<br>      pageSize: number;<br>    };<br>    routes: string[];<br>  } | -      | Objeto auxiliar de busca de dados no masterdata |
+| ctx    | `Context`                                                                                                                                                             | -      | Objeto de contexto do Serviço                   |
+| entity | `string`                                                                                                                                                              | -      | Entidade de dados onde os logs estão salvos     |
+Busca os dados no mastertada
 
 Como dito acima, essa classe tem como objetivo gerar um objeto de monitoramento na rota, que ao finalizar ou ocorrer um erro no tempo de vida da requisição, ele registra:
  - Nome da rota
