@@ -1,6 +1,6 @@
 {
   "name": "smonitorpkg",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "index.js",
   "repository": "git@quality:luizbpacct/smonitorpkg.git",
   "author": "Luiz Carlos B Pereira <luiz.pereira@qualitydigital.com>",

@@ -19,6 +19,7 @@ type GetPerformanceObjectProps = {
   msg?: Record<any, any> | Array<any> | string;
   returnObject?: Record<any, any> | Array<any> | null;
   requestObject?: Record<any, any> | Array<any> | null;
+  authType?: string[]
 };
 
 type PerformanceObject<RouteName> = {
@@ -29,6 +30,7 @@ type PerformanceObject<RouteName> = {
   requestObject: string;
   processingTime: number;
   routeName: RouteName;
+  authType: string
 };
 
 type SaveDataProps<RouteName> = {
@@ -73,6 +75,7 @@ export class ServiceMonitorClass<RouteName = string> {
 
   public getObject({
     isError = false,
+    authType = [],
     msg = "Success",
     returnObject = null,
     requestObject = null,
@@ -85,9 +88,12 @@ export class ServiceMonitorClass<RouteName = string> {
       throw new Error(" The routename has not been specified");
     }
 
+    const authFormated = JSON.stringify(authType)
+
     return {
       date: this.date,
       routeName: this.routeName,
+      authType: authFormated,
       isError,
       msg: getErrorMessageInString(msg),
       returnObject:
@@ -145,6 +151,7 @@ export class ServiceMonitorClass<RouteName = string> {
         "requestObject",
         "processingTime",
         "routeName",
+        "authType",
       ],
       pagination: {
         page: pagination?.page || 1,
