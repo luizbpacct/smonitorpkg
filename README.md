@@ -59,6 +59,7 @@ Inicia o timer de processamento;
 | Prop          | Tipo                                       | Padrão    | Descrição                                              |
 |---------------|--------------------------------------------|-----------|--------------------------------------------------------|
 | isError       | `boolean`                                  | `false`   | Se o log é um erro                                     |
+| authType      | `Array<string>`                            | `[]`      | São os metodos de autenticação usados na requisição    |
 | msg           | `string`                                   | `Success` | Mensagem de retorno da Rota                            |
 | returnObject  | `Record<any, any>`, `Array<any>` ou `null` | `null`    | Objeto de retorno da requisição                        |
 | requestObject | `Record<any, any>`, `Array<any>` ou `null` | `null`    | Objeto enviado para a requisição (body, query ou path) |
