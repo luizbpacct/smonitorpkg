@@ -147,7 +147,7 @@ export class ServiceMonitorClass<RouteName = string> {
         "date",
         "isError",
         "msg",
-        "objectReturn",
+        "returnObject",
         "requestObject",
         "processingTime",
         "routeName",
