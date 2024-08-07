@@ -49,6 +49,7 @@ type GetDataProps = {
       pageSize: number;
     };
     routes: string[];
+    sort?: string
   };
   ctx: Context;
   entity: string;
@@ -115,7 +116,7 @@ export class ServiceMonitorClass<RouteName = string> {
   }
 
   public async getData({
-    data: { startDate, endDate, pagination, routes },
+    data: { startDate, endDate, pagination, routes, sort },
     ctx,
     entity,
   }: GetDataProps) {
@@ -141,7 +142,7 @@ export class ServiceMonitorClass<RouteName = string> {
       where = `${where} AND (${addString})`;
     }
 
-    return ctx.clients.masterdata.searchDocumentsWithPaginationInfo({
+    let params = {
       dataEntity: entity,
       fields: [
         "date",
@@ -157,7 +158,11 @@ export class ServiceMonitorClass<RouteName = string> {
         page: pagination?.page || 1,
         pageSize: pagination?.pageSize || 100,
       },
-      where,
-    });
+      where
+    }
+
+    if (sort) params['sort'] = sort
+
+    return ctx.clients.masterdata.searchDocumentsWithPaginationInfo(params);
   }
 }

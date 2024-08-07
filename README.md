@@ -77,12 +77,13 @@ Pega o objeto formatado para ser inserido na entidade de dados.
 Função que salva o objeto de log dentro do masterdata
 
 #### getData
-| Prop   | Tipo                                                                                                                                                                  | Padrão | Descrição                                       |
-|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------------------------------------|
-| data   | {<br>    startDate: string;<br>    endDate: string;<br>    pagination?: {<br>      page: number;<br>      pageSize: number;<br>    };<br>    routes: string[];<br>  } | -      | Objeto auxiliar de busca de dados no masterdata |
-| ctx    | `Context`                                                                                                                                                             | -      | Objeto de contexto do Serviço                   |
-| entity | `string`                                                                                                                                                              | -      | Entidade de dados onde os logs estão salvos     |
-Busca os dados no mastertada
+| Prop                         | Tipo                                                                                                                                                                                                                                                  | Padrão | Descrição                                       |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------|-------------------------------------------------|
+| data                         | {<br>  data: {<br>    startDate: string;<br>    endDate: string;<br>    pagination?: {<br>      page: number;<br>      pageSize: number;<br>    };<br>    routes: string[];<br>    sort?: string<br>  };<br>  ctx: Context;<br>  entity: string;<br>} | -      | Objeto auxiliar de busca de dados no masterdata |
+| ctx                          | `Context`                                                                                                                                                                                                                                             | -      | Objeto de contexto do Serviço                   |
+| entity                       | `string`                                                                                                                                                                                                                                              | -      | Entidade de dados onde os logs estão salvos     |
+| Busca os dados no mastertada |                                                                                                                                                                                                                                                       |        |                                                 |
+
 
 Como dito acima, essa classe tem como objetivo gerar um objeto de monitoramento na rota, que ao finalizar ou ocorrer um erro no tempo de vida da requisição, ele registra:
  - Nome da rota
