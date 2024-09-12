@@ -1,7 +1,7 @@
 {
     "name": "@lcbp/smonitorpkg",
     "description": "Function package for monitoring VTEX services",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "main": "lib/es5/index.js",
     "module": "lib/es6/index.js",
     "private": false,

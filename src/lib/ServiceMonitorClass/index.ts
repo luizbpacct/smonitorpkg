@@ -134,7 +134,7 @@ export class ServiceMonitorClass<RouteName = string> {
       let addString = "";
 
       routes.forEach((route, index) => {
-        addString += `routeName=${route}`;
+        addString += `routeName="${route}"`;
         if (routes.length !== index + 1) {
           addString += ` OR `;
         }
